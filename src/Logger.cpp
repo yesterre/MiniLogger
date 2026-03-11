@@ -37,3 +37,19 @@ Logger::~Logger(){
         m_logFile.close();
     }
 }
+
+//时间戳函数
+std::string Logger::getCurrentTime(){
+    //1.获取系统当前时间点（自1970年以来的秒数）
+    std::time_t now = std::time(nullptr);
+
+    //2.将秒数转换为本地时间结构体（包含年月日时分秒）
+    //注意：localtime在工业级多线程中不安全，后续我们会优化
+    std::tm* localTime = std::localtime(&now);
+
+    //3.格式化输出：利用流对象将结构体转换为字符串
+    std::ostringstream oss;
+    oss << std::put_time(localTime, "%Y-%m-%d %H:%M:%S"); //格式化时间字符串
+
+    return oss.str();
+}
