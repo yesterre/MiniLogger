@@ -64,7 +64,7 @@ void Logger::log(Logclass level, const std::string& message){
     std::string levelStr;
     switch (level){
         case Logclass::INFO: levelStr = "INFO"; break;
-        case Logclass::WARNING: levelStr = "WARNING"; break;
+        case Logclass::WARN: levelStr = "WARN"; break;
         case Logclass::ERROR: levelStr = "ERROR"; break;
     }
 
