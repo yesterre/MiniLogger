@@ -38,7 +38,7 @@ Logger::~Logger(){
     }
 }
 
-//时间戳函数
+//4.时间戳函数
 std::string Logger::getCurrentTime(){
     //1.获取系统当前时间点（自1970年以来的秒数）
     std::time_t now = std::time(nullptr);
@@ -52,4 +52,25 @@ std::string Logger::getCurrentTime(){
     oss << std::put_time(localTime, "%Y-%m-%d %H:%M:%S"); //格式化时间字符串
 
     return oss.str();
+}
+
+//5.核心日志写入函数
+// 目的：将级别、时间、内容拼接成一行标准的工业日志。
+// 架构逻辑：
+// 为什么用 switch？因为 Logclass 是枚举，switch 可以让编译器检查是否漏掉了某个等级。
+// 为什么最后要加 flush？为了保证日志实时写入，而不是卡在内存缓冲区里。
+void Logger::log(Logclass level, const std::string& message){
+    std::string levelStr;
+    switch (level){
+        case Logclass::INFO: levelStr = "INFO"; break;
+        case Logclass::WARNING: levelStr = "WARNING"; break;
+        case Logclass::ERROR: levelStr = "ERROR"; break;
+    }
+
+    if(m_logFile.is_open()){
+        m_logFile << "[" << getCurrentTime() << "]"
+                  << "[" << levelStr << "] "
+                  << message << std::endl; //写入日志并换行
+        m_logFile.flush();//立即将缓冲区内容写入磁盘，确保日志不丢失
+    }
 }
