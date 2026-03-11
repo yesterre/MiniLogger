@@ -1,6 +1,7 @@
 #include "Logger.hpp"
 #include <ctime>
 #include <iomanip>
+#include <sstream> // 必须添加这一行
 
 //1.实现 Meyers' Singleton：线程安全且唯一
 /**
